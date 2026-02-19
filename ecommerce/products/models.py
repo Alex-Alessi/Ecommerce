@@ -8,6 +8,9 @@ class Category(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
@@ -17,3 +20,6 @@ class Product(models.Model):
     Category = models.ForeignKey(Category, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
