@@ -1,0 +1,10 @@
+<h1>catalogo</h1>
+{% if prodotti %}
+<ul>
+    {% for prodotto in prodotti %}
+        <li>{{prodotto.name}} {{prodotto.price}} {{prodotto.category}}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<h2>Non ci sono prodotti</h2>
+{% endif %}
