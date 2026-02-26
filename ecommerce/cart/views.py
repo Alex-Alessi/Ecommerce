@@ -29,3 +29,13 @@ def cart_detail(request):
 
     context={"items":items, "total": total}
     return render(request, 'cart/carrello.html', context)
+
+@login_required
+def remove_from_cart(request, pk):
+    cart_item = get_object_or_404(CartItem, pk=pk, cart__user=request.user)
+    if cart_item.quantity>1:
+        cart_item.quantity-=1
+        cart_item.save()
+    else:
+        cart_item.delete()
+    return redirect('carrello')

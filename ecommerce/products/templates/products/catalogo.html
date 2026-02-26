@@ -3,6 +3,7 @@
 <ul>
     {% for prodotto in prodotti %}
         <li>{{prodotto.name}} {{prodotto.price}} {{prodotto.category}}</li>
+        <a href="{% url 'add_to_cart' prodotto.pk %}">Aggiungi al carrello</a>
     {% endfor %}
 </ul>
 {% else %}
