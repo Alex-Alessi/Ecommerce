@@ -39,3 +39,4 @@ def remove_from_cart(request, pk):
     else:
         cart_item.delete()
     return redirect('carrello')
+
