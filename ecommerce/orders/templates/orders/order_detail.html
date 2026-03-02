@@ -1,0 +1,15 @@
+<h1>Riepilogo Ordine</h1>
+
+<p>Stato: {{ order.status }}</p>
+<p>Totale: {{ order.total_amount }}</p>
+
+<h2>Prodotti:</h2>
+<ul>
+  {% for item in order_items %}
+    <li>{{ item.product_name }} - {{ item.quantity }} x {{ item.product_price }} = {{ item.subtotal }}</li>
+  {% endfor %}
+</ul>
+
+{% if order.status != 'pagato' %}
+  <a href="{% url 'pay_order' order.pk %}">Paga</a>
+{% endif %}

@@ -1,0 +1,27 @@
+<h1>Ordini</h1>
+
+{% if orders %}
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Stato</th>
+            <th>Prezzo Tot.</th>
+            <th>Creato il</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ordine in orders %}
+        <tr>
+            <td>{{ ordine.id }}</td>
+            <td>{{ ordine.status }}</td>
+            <td>{{ ordine.total_amount }}</td>
+            <td>{{ ordine.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+<p>Non ci sono ordini</p>
+{% endif %}
