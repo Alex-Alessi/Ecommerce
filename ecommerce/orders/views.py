@@ -20,19 +20,24 @@ def checkout(request):
         
     if request.method == 'POST':
         cart = request.user.cart
-        if cart.cartitem_set.exists():
-            coupon_code = request.POST.get('coupon_code', None)
-            coupon_obj = Coupon.objects.filter(codice=coupon_code).first()
 
-            existing_order = Order.objects.filter(user=request.user,status="in_attesa_pagamento").first()
-            if existing_order:
-                existing_order.delete()
+        if not cart.cartitem_set.exists():
+            return redirect('carrello')
+        
+        coupon_code = request.POST.get('coupon_code', None)
+        coupon_obj = Coupon.objects.filter(codice=coupon_code).first()
+            
+        existing_order = Order.objects.filter(user=request.user,status="in_attesa_pagamento").first()
+        if existing_order:
+            order = existing_order
+            order.coupon=coupon_obj
+            order.orderitem_set.all().delete()
+            order.create_from_cart(cart)
+        else:
             order = Order.objects.create(user=request.user, total_amount=0, coupon = coupon_obj)
             order.create_from_cart(cart)
-            return redirect('dettaglio_ordine', pk=order.pk)
 
-        else:
-            return redirect('carrello')
+        return redirect('dettaglio_ordine', pk=order.pk)
 
         
 @login_required
