@@ -10,6 +10,6 @@
   {% endfor %}
 </ul>
 
-{% if order.status != 'pagato' %}
+{% if order.status == 'in_attesa_pagamento' %}
   <a href="{% url 'pay_order' order.pk %}">Paga</a>
 {% endif %}

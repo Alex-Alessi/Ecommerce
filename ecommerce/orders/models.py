@@ -46,6 +46,9 @@ class Order(models.Model):
                 total += subtotal
 
             self.total_amount = total
+
+            if self.coupon:
+                self.total_amount = total - (total * self.coupon.percentuale / 100)
             self.save()
     
     def mark_as_paid(self, cart):

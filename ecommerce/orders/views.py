@@ -2,23 +2,39 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from cart.models import Cart, CartItem
 from .models import Order, OrderItem
+from coupons.models import Coupon
 
 # Create your views here.
 
 @login_required
 def checkout(request):
-    try:
+    if request.method == 'GET':
         cart = request.user.cart
-        if not cart.cartitem_set.exists():
+        cart_items = cart.cartitem_set.all()
+
+        if not cart_items.exists():
             return redirect('carrello')
-        else:
-            order = Order.objects.create(user=request.user, total_amount=0)
+
+        context = {"cart":cart, "cart_items":cart_items}
+        return render(request, 'checkout.html', context)
+        
+    if request.method == 'POST':
+        cart = request.user.cart
+        if cart.cartitem_set.exists():
+            coupon_code = request.POST.get('coupon_code', None)
+            coupon_obj = Coupon.objects.filter(codice=coupon_code).first()
+
+            existing_order = Order.objects.filter(user=request.user,status="in_attesa_pagamento").first()
+            if existing_order:
+                existing_order.delete()
+            order = Order.objects.create(user=request.user, total_amount=0, coupon = coupon_obj)
             order.create_from_cart(cart)
             return redirect('dettaglio_ordine', pk=order.pk)
-    
-    except Cart.DoesNotExist:
-        return redirect('carrello')
-    
+
+        else:
+            return redirect('carrello')
+
+        
 @login_required
 def orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
@@ -39,6 +55,7 @@ def order_detail(request, pk):
 def pay_order(request, pk):
     order = get_object_or_404(Order, pk=pk, user=request.user)
     cart = request.user.cart
-    order.mark_as_paid(cart)
+    if order.status == "in_attesa_pagamento":
+        order.mark_as_paid(cart)
 
     return redirect('dettaglio_ordine', pk=order.pk)
