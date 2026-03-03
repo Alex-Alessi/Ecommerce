@@ -16,7 +16,7 @@ def checkout(request):
             return redirect('carrello')
 
         context = {"cart":cart, "cart_items":cart_items}
-        return render(request, 'checkout.html', context)
+        return render(request, 'orders/checkout.html', context)
         
     if request.method == 'POST':
         cart = request.user.cart

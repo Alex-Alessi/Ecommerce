@@ -1,14 +1,19 @@
 <h1>Riepilogo Ordine</h1>
 
 <p>Stato: {{ order.status }}</p>
-<p>Totale: {{ order.total_amount }}</p>
+<p>Totale: {{ order.total_amount }}€</p>
 
 <h2>Prodotti:</h2>
 <ul>
   {% for item in order_items %}
-    <li>{{ item.product_name }} - {{ item.quantity }} x {{ item.product_price }} = {{ item.subtotal }}</li>
+    <li>{{ item.product_name }}: {{ item.product_price }}€ x {{ item.quantity }} = {{ item.subtotal }}€</li>
   {% endfor %}
 </ul>
+
+{% if order.coupon %}
+  <p>Coupon applicato: {{ order.coupon.percentuale }}%</p>
+{% endif %}
+<p>Totale: {{ order.total_amount }}€</p>
 
 {% if order.status == 'in_attesa_pagamento' %}
   <a href="{% url 'pay_order' order.pk %}">Paga</a>

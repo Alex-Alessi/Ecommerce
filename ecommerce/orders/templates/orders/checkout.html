@@ -1,0 +1,22 @@
+<h1>Checkout</h1>
+
+<h3>Prodotti nel carrello:</h3>
+
+<ul>
+    {% for item in cart_items %}
+        <li>
+            {{ item.product.name }} - 
+            Quantità: {{ item.quantity }} -
+            Prezzo: {{ item.product.price }}
+        </li>
+    {% endfor %}
+</ul>
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <label>Codice coupon:</label>
+    <input type="text" name="coupon_code">
+
+    <button type="submit">Conferma ordine</button>
+</form>
