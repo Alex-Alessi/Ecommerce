@@ -1,3 +1,8 @@
+{% extends "base.html" %}
+
+{% block title %}Ordini{% endblock %}
+
+{% block content %}
 <h1>Ordini</h1>
 
 {% if orders %}
@@ -25,3 +30,5 @@
 {% else %}
 <p>Non ci sono ordini</p>
 {% endif %}
+
+{% endblock %}

@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block title %}Catalogo{% endblock %}
+{% block content %}
 <h1>catalogo</h1>
 {% if prodotti %}
 <ul>
@@ -9,3 +13,4 @@
 {% else %}
 <h2>Non ci sono prodotti</h2>
 {% endif %}
+{% endblock %}

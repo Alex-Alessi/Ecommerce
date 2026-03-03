@@ -1,4 +1,9 @@
-<h1>Riepilogo Ordine</h1>
+{% extends "base.html" %}
+
+{% block title %}Dettaglio Ordine{% endblock %}
+
+{% block content %}
+<h1>Ordine #{{order.id}}</h1>
 
 <p>Stato: {{ order.status }}</p>
 <p>Totale: {{ order.total_amount }}€</p>
@@ -18,3 +23,5 @@
 {% if order.status == 'in_attesa_pagamento' %}
   <a href="{% url 'pay_order' order.pk %}">Paga</a>
 {% endif %}
+
+{% endblock %}
